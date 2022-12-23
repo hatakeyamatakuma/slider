@@ -1,0 +1,10 @@
+#img-content {
+  display: flex;
+  justify-content: center;
+  margin-top: 200px;
+}
+
+.img-content__items img{
+  width:  200px;
+  height: 150px;
+}
