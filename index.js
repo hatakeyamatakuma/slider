@@ -1,135 +1,50 @@
-var slide = document.getElementById('slider');
-var prev = document.getElementById('prev');
-var next = document.getElementById('next');
-var list1 = document.getElementById('list1');
-var list2 = document.getElementById('list2');
-var list3 = document.getElementById('list3');
-var list4 = document.getElementById('list4');
+//フェード処理の速さ
+const fadeSpeed = 1000;
+//imgをまず全部見えなくする
+$(".key-visual img").hide();
+//key-visualの最初の部分にactiveというクラス名を付け、それを見えるようにする。
+$(".key-visual img:first").addClass("active").show();
 
-// クリックイベント
+let changeImage = function(){
+  //activeの付いた要素を$activeと定義
+  let $active = $(".key-visual img.active")
+  //activeの付いた要素の次の要素にimgという文字列が存在するか否か。存在する場合$nextに次のimgを代入。なければ最初のimgを代入し最初の画面に戻る。
+  let $next = $active.next("img").length?$active.next("img"):$(".key-visual img:first");
 
-next.addEventListener('click', nextClick);
-prev.addEventListener('click', prevClick);
-
-function nextClick() {
-  if (slide.classList.contains('slider1') === true) {
-    slide.classList.remove('slider1');
-    slide.classList.add('slider2');
-    list1.style.backgroundColor = 'transparent';
-    list2.style.backgroundColor = '#000';
-    count = 0;
-  } else if (slide.classList.contains('slider2') === true) {
-    slide.classList.remove('slider2');
-    slide.classList.add('slider3');
-    list2.style.backgroundColor = 'transparent';
-    list3.style.backgroundColor = '#000';
-    count = 0;
-  } else if (slide.classList.contains('slider3') === true) {
-    slide.classList.remove('slider3');
-    slide.classList.add('slider4');
-    list3.style.backgroundColor = 'transparent';
-    list4.style.backgroundColor = '#000';
-    count = 0;
-  } else {
-    slide.classList.remove('slider4');
-    slide.classList.add('slider1');
-    list4.style.backgroundColor = 'transparent';
-    list1.style.backgroundColor = '#000';
-    count = 0;
-  }
-};
-
-function prevClick() {
-  if (slide.classList.contains('slider1') === true) {
-    slide.classList.remove('slider1');
-    slide.classList.add('slider4');
-    list1.style.backgroundColor = 'transparent';
-    list4.style.backgroundColor = '#000';
-    count = 0;
-  } else if (slide.classList.contains('slider2') === true) {
-    slide.classList.remove('slider2');
-    slide.classList.add('slider1');
-    list2.style.backgroundColor = 'transparent';
-    list1.style.backgroundColor = '#000';
-    count = 0;
-  } else if (slide.classList.contains('slider3') === true) {
-    slide.classList.remove('slider3');
-    slide.classList.add('slider2');
-    list3.style.backgroundColor = 'transparent';
-    list2.style.backgroundColor = '#000';
-    count = 0;
-  } else {
-    slide.classList.remove('slider4');
-    slide.classList.add('slider3');
-    list4.style.backgroundColor = 'transparent';
-    list3.style.backgroundColor = '#000';
-    count = 0;
-  }
-};
-
-// インジケーター
-
-list1.addEventListener('click', click1);
-list2.addEventListener('click', click2);
-list3.addEventListener('click', click3);
-list4.addEventListener('click', click4);
-
-function click1() {
-  slide.classList.add('slider1');
-  slide.classList.remove('slider2');
-  slide.classList.remove('slider3');
-  slide.classList.remove('slider4');
-  list1.style.backgroundColor = '#000';
-  list2.style.backgroundColor = 'transparent';
-  list3.style.backgroundColor = 'transparent';
-  list4.style.backgroundColor = 'transparent';
-  count = 0;
+  $active.fadeOut(fadeSpeed).removeClass("active");
+  $next.fadeIn(fadeSpeed).addClass("active");
 }
 
-function click2() {
-  slide.classList.remove('slider1');
-  slide.classList.add('slider2');
-  slide.classList.remove('slider3');
-  slide.classList.remove('slider4');
-  list1.style.backgroundColor = 'transparent';
-  list2.style.backgroundColor = '#000';
-  list3.style.backgroundColor = 'transparent';
-  list4.style.backgroundColor = 'transparent';
-  count = 0;
+let changeReverce = function(){
+  //activeの付いた要素を$activeと定義
+  let $active = $(".key-visual img.active")
+  //activeの付いた要素の次の要素にimgという文字列が存在するか否か。存在する場合$nextに次のimgを代入。なければ最初のimgを代入し最初の画面に戻る。
+  let $prev = $active.prev("img").length?$active.prev("img"):$(".key-visual img:last");
+
+  $active.fadeOut(fadeSpeed).removeClass("active");
+  $prev.fadeIn(fadeSpeed).addClass("active");
 }
 
-function click3() {
-  slide.classList.remove('slider1');
-  slide.classList.remove('slider2');
-  slide.classList.add('slider3');
-  slide.classList.remove('slider4');
-  list1.style.backgroundColor = 'transparent';
-  list2.style.backgroundColor = 'transparent';
-  list3.style.backgroundColor = '#000';
-  list4.style.backgroundColor = 'transparent';
+$(".right-btn").on("click",function(){
+  console.log("右クリック")
+  changeImage();
   count = 0;
-}
+})
 
-function click4() {
-  slide.classList.remove('slider1');
-  slide.classList.remove('slider2');
-  slide.classList.remove('slider3');
-  slide.classList.add('slider4');
-  list1.style.backgroundColor = 'transparent';
-  list2.style.backgroundColor = 'transparent';
-  list3.style.backgroundColor = 'transparent';
-  list4.style.backgroundColor = '#000';
+$(".left-btn").on("click",function(){
+  console.log("左クリック")
+  changeReverce();
   count = 0;
-}
+})
 
 // 自動スライド
 var count = 0;
 
 setInterval(() => {
-  if (count > 4) {
-    count = 0;
-    nextClick();
-  }
-  count++;
-  console.log(count);
+if (count > 4) {
+  count = 0;
+  changeImage();
+}
+count++;
+console.log(count);
 }, 1000);
